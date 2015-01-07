@@ -71,7 +71,7 @@ class DAO_Base extends ActiveRecord\Model {
      * dsn配置
      *
      */
-    public static $dsn = 'mysql://wejilu:GokwSWacENzqI21acsgcA6gIKH7js0sv@localhost/web?charset=utf8';
+    public static $dsn = 'mysql://root:123456@localhost/web?charset=utf8';
 
     /**
      * 表主键
@@ -83,12 +83,10 @@ class DAO_Base extends ActiveRecord\Model {
             $result = static::toShard();
             static::$table_name = $result['table'];
             static::$dsn = $result['dsn'];
-        } else if (!static::$table_name){
-            static::$table_name = lcfirst(str_replace('DAO_', '', get_called_class())) . 's';
-            //static::$table_name = ActiveRecord\Inflector::instance()->tableize(str_replace('Model', '', get_called_class()));
         }
-
-        $dsn = static::$dsn;
+        $config = Yaf_Registry::get('application');
+        $dbConfig = $config->get('application.db');
+        $dsn = $dbConfig->get('dsn');
         ActiveRecord\Config::initialize(function($cfg) use ($dsn)
         {
                 $cfg->set_connections(array(
