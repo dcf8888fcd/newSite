@@ -1,5 +1,5 @@
 <IfModule mod_rewrite.c>
-  setEnv RUN_MODE devel
+  #setEnv RUN_MODE devel
   Options +FollowSymlinks
   RewriteEngine On
   #RewriteRule ^/phpmyadmin(/)? /www/phpmyadmin/index.php
