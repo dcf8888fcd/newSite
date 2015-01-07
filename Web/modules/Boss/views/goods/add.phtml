@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+</head>
+  <body>
+<?php require __DIR__ . '/../base/sidebar.phtml' ?>
+<form method="post">
+商品名称:<input name="gName" type="text" value="<?=$data->gName?>" ><br/>
+类型:<select name="gType" ><?php foreach($types as $type => $desc){?> <option value="<?=$type?>" <?php if($data->gType == $type){echo 'selected';}?> ><?=$desc?></option> <?php }?> </select><br/>
+    1级会员价:<input name="gOneLevelPrice" type="text"  value="<?=$data->gOneLevelPrice?>" ><br/>
+    2级会员价:<input name="gTwoLevelPrice" type="text"  value="<?=$data->gTwoLevelPrice?>" ><br/>
+    市场价:<input name="gMarketPrice" type="text"  value="<?=$data->gMarketPrice?>" ><br/>
+    成本价:<input name="gOriginPrice" type="text"  value="<?=$data->gOriginPrice?>" ><br/>
+    条形编码:<input name="gLineCode" type="text"  value="<?=$data->gLineCode?>" ><br/>
+    <input name="gid" type="hidden" value="<?=$data->gid?>"><br/>
+    <input  type="submit" value="<?php if ($action == 'add') { echo '添加';} else {echo '编辑';}?>"><br/>
+</form>
+</body>
+</html>

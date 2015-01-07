@@ -1,0 +1,26 @@
+<?php require __DIR__ . '/../base/sidebar.phtml' ?>
+<form method="get">
+
+订单编号:<input name="oSn" type="text" value="<?=$params['oSn']?>"><br/>
+    <input  type="submit" value="查询"><br/>
+</form>
+<br/>
+<table>
+<tr>
+<td>订单编号</td>
+<td>商品</td>
+</tr>
+<?php if($list) {?>
+<?php foreach ($list as $data){?>
+<tr>
+<td><?=$data->oSn?></td>
+<td><?=$goods[$data->gid]->gName?></td>
+</tr>
+<?php }?>
+<?php }?>
+<tr>
+<td colspan=3><?=$links['all']?>|总记录数<?=$totalItems?>条</td>
+</tr>
+</table>
+</body>
+</html>

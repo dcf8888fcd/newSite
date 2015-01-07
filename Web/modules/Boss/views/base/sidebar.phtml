@@ -1,0 +1,22 @@
+          <div class="sidebar">
+            <ul class="nav nav-pills nav-stacked">
+            <?php if ($_navs) {?>
+              <?php foreach ($_navs as $key => $nav) {?>
+                <li data-module="<?=$nav['module']?>">
+                  <?php if ($nav['subnavs']) {?>
+                    <a data-toggle="collapse" href="#nav-collapse-<?=$key?>"><i class="icon icon-<?=$nav['icon']?>"></i><?=$nav['text']?></a>
+                    <div class="collapse" id="nav-collapse-<?=$key?>">
+                      <ul class="nav-nested" role="menu">
+                        <?php foreach ($nav['subnavs'] as $subNav){ ?>
+                        <li data-module="<?=$subNav['module']?>" role="presentation"><a href="<?=$urlPrefix?><?=$subNav['url']?>"><?=$subNav['text']?></a></li>
+                        <?php }?>
+                      </ul>
+                    </div>
+                  <?php } else {?>
+                    <a href="<?=$urlPrefix?><?=$nav['url']?>"><i class="icon icon-<?=$nav['icon']?>"></i><?=$nav['text']?></a>
+                  <?php } ?>
+                </li>
+              <?php } ?>
+            <?php } ?>
+           </ul>
+          </div>

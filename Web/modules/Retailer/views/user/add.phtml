@@ -1,0 +1,16 @@
+<?php require __DIR__ . '/../base/sidebar.phtml' ?>
+<form method="post">
+用户名:<input name="uName" type="text" value="<?=$data->uName?>" ><br/>
+    密码:<input name="uPwd" type="password" value=""><br/>
+    手机号:<input name="uPhone" type="text"  value="<?=$data->uPhone?>"><br/>
+    等级:<select name="uLevel" ><?php foreach($levels as $type => $desc){?> <option value="<?=$type?>" <?php if($data->uLevel == $type){echo 'selected';}?> ><?=$desc?></option> <?php }?> </select><br/>
+
+    卡号:<input name="uNo" type="text"  value="<?=$data->uNo?>"><br/>
+    性别:<select name="uSex" ><?php foreach($sexes as $type => $desc){?> <option value="<?=$type?>" <?php if($data->uSex == $type){echo 'selected';}?> ><?=$desc?></option> <?php }?> </select><br/>
+    地区:<select name="uArea" ><?php foreach($cities as $city){?> <option value="<?=$city->cid?>" <?php if($data->uArea == $city->cid){echo 'selected';}?> ><?=$city->cName?></option> <?php }?> </select><br/>
+    余额:<input name="uBalance" type="text"  value="<?=$data->uBalance?>"><br/>
+    <input name="uid" type="hidden" value="<?=$data->uid?>"><br/>
+    <input  type="submit" value="<?php if ($action == 'add') { echo '添加';} else {echo '编辑';}?>"><br/>
+</form>
+</body>
+</html>

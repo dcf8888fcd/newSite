@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+</head>
+  <body>
+<?php require __DIR__ . '/../base/sidebar.phtml' ?>
+    <a href="add"><input  type="button" value="添加"></a><br/>
+<form method="get">
+
+用户名:<input name="mName" type="text" value="<?=$params['mName']?>"><br/>
+
+    <input  type="submit" value="查询"><br/>
+</form>
+<br/>
+<table>
+<tr>
+<td>用户名</td>
+<td>手机号</td>
+<td>类型</td>
+<td>销售分成</td>
+<td>售卡分成</td>
+<td>操作</td>
+</tr>
+<?php if($list) {?>
+<?php foreach ($list as $data){?>
+<tr>
+<td><?=$data->rName?></td>
+<td><?=$data->rPhone?></td>
+<td><?=$types[$data->rType]?></td>
+<td><?php echo $data->rSaleRate/$rateMultiple;?>%</td>
+<td><?php echo $data->rSaleCardRate/$rateMultiple;?>%</td>
+<td><a href="edit?id=<?=$data->rid?>">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="remove?id=<?=$data->rid?>">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="calcSale" data-rid="<?=$data->rid?>">结算销售</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="calcSaleCard" data-rid="<?=$data->rid?>">结算售卡</a></td>
+</tr>
+<?php }?>
+<?php }?>
+<tr>
+<td colspan=3><?=$links['all']?>|总记录数<?=$totalItems?>条</td>
+</tr>
+</table>
+<script>
+    $('.calcSaleCard').click(function(){
+        var rid = $(this).data('rid');
+        $.get('calcSaleCard', {rid:rid}, function(data){
+            if (data.errcode != 0) {
+                alert(data.errmsg);
+                return;
+            } else {
+                if (confirm( '结算总金额:'+ data.result.totalMoney +';开始时间:'+ data.result.startTime +'截至时间:' + data.result.endTime + "\n" +'确认结算？')) {
+                    $.get('calcSaleCard', {rid:rid,confirm:'yes'}, function(data){
+                        if (data.errcode != 0) {
+                            alert(data.errmsg);
+                            return;
+                        } else {       
+                            alert("结算成功");
+                            return;
+                        }
+                    }, 'json');
+                }
+            }
+        }, 'json')
+    })
+
+    $('.calcSale').click(function(){
+        var rid = $(this).data('rid');
+        $.get('calcSale', {rid:rid}, function(data){
+            if (data.errcode != 0) {
+                alert(data.errmsg);
+                return;
+            } else {
+                if (confirm( '结算总金额:'+ data.result.totalMoney +';开始时间:'+ data.result.startTime +'截至时间:' + data.result.endTime + "\n" +'确认结算？')) {
+                    $.get('calcSale', {rid:rid,confirm:'yes'}, function(data){
+                        if (data.errcode != 0) {
+                            alert(data.errmsg);
+                            return;
+                        } else {       
+                            alert("结算成功");
+                            return;
+                        }
+                    }, 'json');
+                }
+            }
+        }, 'json')
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<?php require __DIR__ . '/../base/sidebar.phtml' ?>
+<form method="post">
+    用户:<select name="uid" ><?php foreach($users as $user){?> <option value="<?=$user->uid?>" <?php if($data->uid == $user->uid){echo 'selected';}?> ><?=$user->uName?></option> <?php }?> </select><br/>
+    面额:<select name="scAmount" ><?php foreach($amounts as $type => $desc){?> <option value="<?=$type?>" <?php if($data->scAmount == $type){echo 'selected';}?> ><?=$desc?></option> <?php }?> </select><br/>
+
+        <input name="scid" type="hidden" value="<?=$data->scid?>"><br/>
+    <input  type="submit" value="<?php if ($action == 'add') { echo '添加';} else {echo '编辑';}?>"><br/>
+</form>
+</body>
+</html>

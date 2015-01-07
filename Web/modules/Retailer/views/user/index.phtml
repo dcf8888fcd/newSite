@@ -1,0 +1,32 @@
+<?php require __DIR__ . '/../base/sidebar.phtml' ?>
+    <a href="add"><input  type="button" value="添加"></a><br/>
+<form method="get">
+
+用户名:<input name="uName" type="text" value="<?=$params['uName']?>"><br/>
+手机号:<input name="uPhone" type="text" value="<?=$params['uPhone']?>"><br/>
+卡号:<input name="uNo" type="text" value="<?=$params['uNo']?>"><br/>
+
+    <input  type="submit" value="查询"><br/>
+</form>
+<br/>
+<table>
+<tr>
+<td>用户名</td>
+<td>手机号</td>
+<td>操作</td>
+</tr>
+<?php if($list) {?>
+<?php foreach ($list as $data){?>
+<tr>
+<td><?=$data->uName?></td>
+<td><?=$data->uPhone?></td>
+<td><a href="edit?id=<?=$data->uid?>">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="remove?id=<?=$data->uid?>">删除</a></td>
+</tr>
+<?php }?>
+<?php }?>
+<tr>
+<td colspan=3><?=$links['all']?>|总记录数<?=$totalItems?>条</td>
+</tr>
+</table>
+</body>
+</html>

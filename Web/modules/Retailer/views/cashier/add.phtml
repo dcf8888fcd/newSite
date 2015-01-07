@@ -1,0 +1,10 @@
+<?php require __DIR__ . '/../base/sidebar.phtml' ?>
+<form method="post">
+用户名:<input name="cName" type="text" value="<?=$data->cName?>" ><br/>
+    密码:<input name="cPwd" type="password" value=""><br/>
+    手机号:<input name="cPhone" type="text"  value="<?=$data->cPhone?>"><br/>
+    <input name="cid" type="hidden" value="<?=$data->cid?>"><br/>
+    <input  type="submit" value="<?php if ($action == 'add') { echo '添加';} else {echo '编辑';}?>"><br/>
+</form>
+</body>
+</html>
