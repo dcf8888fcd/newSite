@@ -91,6 +91,7 @@ class BaseController extends Yaf_Controller_Abstract {
      * 输出模板并退出
      */
     public function _display($tpl){
+        $tpl = strtolower($tpl);
         $config =  Yaf_Registry::get('application');
         echo $this->_view->render($tpl . "." . $config->get('application.view.ext'));
         exit;
