@@ -1,22 +1,33 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<!-- 新 Bootstrap 核心 CSS 文件 -->
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<?php require __DIR__ . '/../base/header.phtml' ?>
+<div class="main">
+            <div class="container">
+                <div class="main-header">
+                    <h4 class="main-title">
+                        <i class="icon icon-house"></i>
+                        <span>商家-名称</span>
+                    </h4>
+                   <?php if ($_breadcrumb){?>
+                    <ol class="breadcrumb">
+                        <?php foreach($_breadcrumb as $bread){ ?>
+                        <li <?php if ($bread['active']){echo 'class="active"';}?> >
+<?php if (!$bread['active']){ ?>
+<a href="<?php if($bread['url']){echo $bread['url'];}else{echo "javascript:void(0);";}?>"><?=$bread['text']?></a><?php } else {?><?=$bread['text']?>
+<?php }?>
+</li>
+                        <?php }?>
+                    </ol>
+                    <?php }?>
+                </div>
+                <div class="main-content">
 
-<!-- 可选的Bootstrap主题文件（一般不用引入） -->
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-
-<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-
-<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
-</head>
-  <body>
 <?php require __DIR__ . '/../base/sidebar.phtml' ?>
+<div class="mainbody">
+                        <div class="panel panel-default we-panel">
+                            <div class="panel-heading">
+                            <h3 class="panel-title"><?=array_pop($_breadcrumb)['text']?></h3>
+                            </div>
+                            <div class="panel-body">
+
     <a href="add"><input  type="button" value="添加"></a><br/>
 <form method="get">
 
@@ -44,5 +55,29 @@
 <td colspan=3><?=$links['all']?>|总记录数<?=$totalItems?>条</td>
 </tr>
 </table>
-</body>
-</html>
+
+
+
+<!-- 模态弹窗：重置密码成功 -->
+                                <div class="modal fade we-modal-confirm account-reset-success-modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <h4><i class="icon icon-success"></i>重置密码成功！</h4>
+                                                <p>帐号和密码已发送短信至该用户绑定的手机上！</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary we-btn" type="button" data-dismiss="modal">确认</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal -->
+
+
+</div><!-- /.panel-body -->
+                        </div><!-- /.panel -->
+                    </div><!-- /.mainbody -->
+                </div>
+            </div>
+        </div>
+<?php require __DIR__ . '/../base/footer.phtml' ?>

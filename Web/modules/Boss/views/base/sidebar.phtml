@@ -20,3 +20,50 @@
             <?php } ?>
            </ul>
           </div>
+<script>
+$(function(){
+    var href = window.location.href;
+    var index = href.indexOf('?');
+    if (index != -1) {
+        href = href.substr(0, index);
+    }
+
+    index = href.indexOf('#');
+    if (index != -1) {
+        href = href.substr(0, index);
+    }
+
+    $('.sidebar').find(".nav > li").each(function () {
+        var tgl = $(this).find("a").data('toggle');
+        var pHref = $(this).find("a").prop('href');
+        if(typeof(tgl) == 'undefined') {
+           //只有一个链接 
+           if (href==pHref){
+                $(this).addClass('active');
+           } 
+        } else {
+            var isActive = false;
+            $(this).find("div > ul > li").each(function(){
+                var navHref = $(this).find("a").prop('href');
+                if (navHref == href) {
+                    isActive = true;
+                    $(this).addClass('active');
+                }
+            })
+            if (isActive) {
+                $(this).addClass("open");
+                $(this).find("> a").removeClass("collapsed");
+                $(this).find("div").addClass("in");
+            }
+        }
+    
+    });
+    $('.sidebar').find(".nav > li").click(function(){
+        if ($(this).hasClass("open")) {
+            $(this).removeClass("open");
+        } else {
+            $(this).addClass("open");
+        }
+    });
+})
+</script>

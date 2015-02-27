@@ -7,7 +7,7 @@ class IndexController extends Boss_BaseController {
 
     public function indexAction () {
 
-        $url = '/' . $this->_request->getModuleName() . '/user/index';
+        $url = $this->_baseUri . '/user/index';
         if ($this->_getCurrentManager()) {
             //已登录 则跳转到消费页
             return $this->_redirect($url);
@@ -37,7 +37,7 @@ class IndexController extends Boss_BaseController {
 
     public function logoutAction(){
         $this->_logout(); 
-        return $this->_redirect('/' . $this->_request->getModuleName() . '/index/index');
+        return $this->_redirect($this->_baseUri . '/index/index');
     }
 
 }

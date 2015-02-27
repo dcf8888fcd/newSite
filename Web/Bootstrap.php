@@ -26,7 +26,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
             $routerServer = Yaf_Dispatcher::getInstance()->getRouter();
             foreach ($routeConfig as $name => $route) {
                 if ($route['type'] == 'regex') {
-                    $router = new Yaf_Route_Regex($route['match'], $route['route'], $route['map']);
+                    $router = new Yaf_Route_Regex($route['match'], $route['route'], (array)$route['map']);
                     $routerServer->addRoute($name, $router);
                 }
             }

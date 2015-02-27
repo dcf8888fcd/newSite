@@ -6,15 +6,17 @@ class Boss_BaseController extends BaseController {
     protected $_cookieExpired = '+1 day';
     protected $_joinStr = '_';
     protected $_title = '首页';
+    protected $_baseUri = '';
 
 
     public function init(){
         parent::init();
+        $this->_baseUri = '/'. $this->_request->getModuleName();
 
         $manager = $this->_getCurrentManager(); 
         //判断登陆
         if (!in_array(strtolower($this->_request->getControllerName() . '.' . $this->_request->getActionName()), $this->_ignoreLogins) && !$manager) {
-            return $this->_redirect('/'. $this->_request->getModuleName() .'/index/index');
+            return $this->_redirect($this->_baseUri .'/index/index');
         }
 
         if ($manager && !$this->_checkSign()) {
@@ -31,9 +33,46 @@ class Boss_BaseController extends BaseController {
      * 公共试图赋值
      */
     public function _assignCommon(){
-        $this->_view->assign('_navs', $this->_getNavs());
+        $navs = $this->_getNavs();
+        $this->_view->assign('_navs', $navs);
+        $this->_view->assign('_breadcrumb', $this->_getBreadCrumb($navs));
         $this->_view->assign('_title', $this->_title);
+        $this->_view->assign('_baseUri', $this->_baseUri);
         $this->_view->assign('_user', $this->_getCurrentManager());
+    }
+
+
+    public function _getBreadCrumb($navs){
+        $breadcrumb = array();
+        $uri = $this->_request->getRequestUri();
+        //获取面包屑
+        $findBreadCrumb = false;
+        foreach ($navs as $controller => $nav) {
+            if ($nav['subnavs']) {
+                foreach ($nav['subnavs'] as $action => $subNav) {
+                    if ($uri == $subNav['url']) {
+                        $breadcrumb[] = array('url' => $subNav['url'], 'text' => $subNav['text'], 'active' => true);
+                        $findBreadCrumb = true;
+                        break;
+                    }
+                }
+                if ($findBreadCrumb) {
+                    $breadcrumb[] = array('url' => $nav['url'], 'text' => $nav['text']);
+                    break;
+                }
+            } else {
+                if ($uri == $subNav['url']) {
+                    $nav['active'] = true;
+                    $breadcrumb[] = $nav;
+                    $findBreadCrumb = true;
+                    break;
+                }
+            }
+        }
+        $breadcrumb[] = array('url' => $this->_baseUri . '/index/index', 'text' => '首页');
+        $breadcrumb = array_reverse($breadcrumb, true);
+
+        return $breadcrumb;
     }
 
     /**
