@@ -26,12 +26,14 @@
     <input  type="submit" value="消费"><br/>
 </form>
 <br/>
-
+<textarea id="goods_detail" style="width:400px;height:300px;">
+</textarea>
 <script>
 $('#getGoods').click(function(){
     $.post('/pos/user/getGoods', {gLineCode:$('input[name=gLineCode]').val()}, function(data){
         if (data.errcode == 0) {
             alert('ok');
+            $('#goods_detail').html("商品名:"+data.result.gName);
         } else {
             alert(data.errmsg);
         }

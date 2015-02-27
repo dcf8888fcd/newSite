@@ -99,6 +99,7 @@ class UserController extends Pos_BaseController {
     }
 
     public function _getByUNo($uNo){
+
         try {
             $dao = new DAO_User();
             $conditions = array();
@@ -113,17 +114,18 @@ class UserController extends Pos_BaseController {
             $conditions = array('uNo = ?', $uNo);
 
             $user= $dao->listByConditions($conditions, $pageOptions);
-            if(!$user) {
-                throw new Exception('不存在此用户');
-            }
-
-            $user = $user[0];
-
-            return $user;
 
         } catch (Exception $e){
             throw new Exception($e);
         }
+
+        if(!$user) {
+            throw new Exception('不存在此用户');
+        }
+
+        $user = $user[0];
+
+        return $user;
 
     }
 
@@ -154,16 +156,18 @@ class UserController extends Pos_BaseController {
             $conditions = array('gLineCode = ?', $gLineCode);
 
             $goods = $dao->listByConditions($conditions, $pageOptions);
-            if(!$goods) {
-                throw new Exception('不存在此商品');
-            }
-
-            $goods = $goods[0];
-
-            return $goods;
-
+ 
         } catch (Exception $e){
             throw new Exception($e);
         }
+
+        if(!$goods) {
+            throw new Exception('不存在此商品');
+        }
+
+        $goods = $goods[0];
+
+        return $goods;
+
     }
 }
