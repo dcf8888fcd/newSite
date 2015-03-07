@@ -31,29 +31,53 @@ class BaseModel {
      * return Model
      */
     public function add($data) {
-        return $this->dao->add($data);
+        try {
+            return $this->dao->add($data);
+        } catch (Exception $e) {
+           throw new Exception('系统异常'); 
+        }
     }
 
     /**
      * @param mixed $key array|string
      */
     public function get($key, $field = array()){
-        return $this->dao->get($key);
+        try {
+            return $this->dao->get($key);
+        } catch (Exception $e) {
+           throw new Exception('系统异常'); 
+        }
     }
 
     public function update($key, $data) {
-        return $this->dao->modify($key, $data);
+        try {
+            return $this->dao->modify($key, $data);
+        } catch (Exception $e) {
+           throw new Exception('系统异常'); 
+        }
     }
 
     public function updateByConditions($condition, $data){
-        return $this->dao->updateByConditions($condition, $data);
+        try {
+            return $this->dao->updateByConditions($condition, $data);
+        } catch (Exception $e) {
+           throw new Exception('系统异常'); 
+        }
     }
 
     public function remove($key) {
-        return $this->dao->remove($key);
+        try {
+            return $this->dao->remove($key);
+        } catch (Exception $e) {
+           throw new Exception('系统异常'); 
+        }
     }
 
     public function listByCondition($conditions = array(),  &$pageOptions = array(), $field = array(),  $order = null, $group = null) {
-        return $this->dao->listByCondition($conditions, $pageOptions, $field, $order, $group);
+        try {
+            return $this->dao->listByCondition($conditions, $pageOptions, $field, $order, $group);
+        } catch (Exception $e) {
+           throw new Exception('系统异常'); 
+        }
     }
 }

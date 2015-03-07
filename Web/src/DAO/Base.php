@@ -114,10 +114,17 @@ class DAO_Base extends ActiveRecord\Model {
             if (!$data[$this->created_at])
                 $data[$this->created_at] = $now;
 
-            $result = static::create($data, true, false); 
+            $model = static::create($data, true, false); 
         } catch (Exception $e) {
             throw new ActiveRecord\ModelException($e);
         }
+
+        $result = $model->values_for_pk();
+        
+        if ($result) {
+            $result = $result[static::$pk];
+        }
+        return $result;
     }
 
     /**
