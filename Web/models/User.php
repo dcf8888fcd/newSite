@@ -39,4 +39,14 @@ class UserModel extends BaseModel {
         return $list;
 
     }
+
+    public function modify($uid, $data) {
+        try {
+            $result = $this->dao->modify($uid, $data); 
+        } catch (Exception $e) {
+            throw new Exception('系统错误');
+        }
+
+        return $result;
+    }
 }
