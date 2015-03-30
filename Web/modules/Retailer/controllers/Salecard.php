@@ -15,6 +15,7 @@ class SalecardController extends Retailer_BaseController {
      * 列表
      */
     function indexAction(){
+        $result =  Helper_Curl::get(Helper_Curl::$url);
         $params = $this->_request->getRequest();
         $retailer = $this->_getCurrentRetailer();
         try {
