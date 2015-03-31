@@ -15,7 +15,6 @@ class SalecardController extends Retailer_BaseController {
      * 列表
      */
     function indexAction(){
-        $result =  Helper_Curl::get(Helper_Curl::$url);
         $params = $this->_request->getRequest();
         $retailer = $this->_getCurrentRetailer();
         try {
@@ -75,15 +74,28 @@ class SalecardController extends Retailer_BaseController {
         if ($this->_request->isPost()) {
             $data = $this->_request->getPost();
             try {
+                $userDao = new DAO_User();
+                $user = $userDao->get($data['uid']);
+
+                try {
+                    //请求ecshop 添加余额
+                    $get = array('method' => 'add_user_account', 'phone'=> $user->uPhone, 'money' => $data['scAmount']);
+                    ksort($get, SORT_STRING);
+                    $str = implode($get);
+                    $get['sign'] = md5($str . Helper_Curl::$signStr);
+                    $result =  Helper_Curl::get(Helper_Curl::$url, $get);
+                } catch (Exception $e){
+                    throw new Exception($e->getMessage()); 
+                }
+
+                $uBalance = $result;
+
                 $rid = $retailer['rid'];
                 $data['scAmount'] = $data['scAmount'] * 100;
-                DAO_SaleCard::transaction(function() use ($rid, $data){
-                    $userDao = new DAO_User();
-                    $userDao->modify($data['uid'], 'uBalance = uBalance + '. $data['scAmount']);
-                    $dao = new DAO_SaleCard();
-                    $data['rid'] = $rid;
-                    $dao->add($data); 
-                });
+                $userDao->modify($data['uid'], 'uBalance = '. intval($uBalance * 100));
+                $dao = new DAO_SaleCard();
+                $data['rid'] = $rid;
+                $dao->add($data); 
             } catch (Exception $e){
                 return $this->_errorMessage($e->getMessage());
             }
@@ -91,7 +103,7 @@ class SalecardController extends Retailer_BaseController {
         }
 
         try {
-            $users = $userDao->listByConditions(array('rid = ?', $retailer['rid']));
+            $users = $userDao->listByConditions();
         } catch (Exception $e) {
         
         }

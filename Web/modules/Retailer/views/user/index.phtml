@@ -1,5 +1,5 @@
 <?php require __DIR__ . '/../base/sidebar.phtml' ?>
-    <a href="add"><input  type="button" value="添加"></a><br/>
+<!--<a href="add"><input  type="button" value="添加"></a><br/>-->
 <form method="get">
 
 用户名:<input name="uName" type="text" value="<?=$params['uName']?>"><br/>
@@ -13,14 +13,14 @@
 <tr>
 <td>用户名</td>
 <td>手机号</td>
-<td>操作</td>
+<!--<td>操作</td>-->
 </tr>
 <?php if($list) {?>
 <?php foreach ($list as $data){?>
 <tr>
 <td><?=$data->uName?></td>
 <td><?=$data->uPhone?></td>
-<td><a href="edit?id=<?=$data->uid?>">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="remove?id=<?=$data->uid?>">删除</a></td>
+<!--<td><a href="edit?id=<?=$data->uid?>">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="remove?id=<?=$data->uid?>">删除</a></td>-->
 </tr>
 <?php }?>
 <?php }?>

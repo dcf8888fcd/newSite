@@ -14,14 +14,14 @@
 <tr>
 <td>用户名</td>
 <td>手机号</td>
-<td>操作</td>
+<!--<td>操作</td>-->
 </tr>
 <?php if($list) {?>
 <?php foreach ($list as $data){?>
 <tr>
 <td><?=$users[$data->uid]->uName?></td>
 <td><?=$users[$data->uid]->uPhone?></td>
-<td><a href="edit?id=<?=$data->uid?>">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="remove?id=<?=$data->uid?>">删除</a></td>
+<!--<td><a href="edit?id=<?=$data->uid?>">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="remove?id=<?=$data->uid?>">删除</a></td>-->
 </tr>
 <?php }?>
 <?php }?>

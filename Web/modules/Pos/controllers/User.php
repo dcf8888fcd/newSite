@@ -29,23 +29,26 @@ class UserController extends Pos_BaseController {
                     $price = $goods->gTwoLevelPrice;
                 }
 
-                if($price > $user->uBalance) {
-                    return $this->_errorMessage('余额不足');
-                }
 
-                DAO_Order::transaction(function() use ($user, $goods, $cashier, $number, $price){
+                $orderSn = Helper_Key::generateOSn();
+                DAO_Order::transaction(function() use ($user, $goods, $cashier, $number, $price, $orderSn){
                     //扣钱
                     $totalPrice = intval($price * 100) * intval($number);
+
+                    if($totalPrice > $user->uBalance) {
+                        return $this->_errorMessage('余额不足');
+                    }
+
                     //这里应该先加个锁
                     $userDao = new DAO_User();
                     $userDao->modify($user->uid, 'uBalance = uBalance - '. $totalPrice);
                     //这里解锁
                     $orderData = array();
-                    $orderData['oSn'] = Helper_Key::generateOSn();
+                    $orderData['oSn'] = $orderSn;
                     $orderData['uid'] = $user->uid;
                     $orderData['gid'] = $goods->gid;
-                    $orderData['rid'] = $cashier->rid;
-                    $orderData['cid'] = $cashier->cid;
+                    $orderData['rid'] = $cashier['rid'];
+                    $orderData['cid'] = $cashier['cid'];
                     $orderData['oPrice'] = $price;
                     $orderData['oNumber'] = $number;
                     $orderData['oTotalPrice'] = $totalPrice;
@@ -55,8 +58,18 @@ class UserController extends Pos_BaseController {
                     //加入销售结算历史表
                     //$profitShareHistory = new DAO_ProfitShareHistory();
 
-
                 });
+
+                try {
+                    //请求ecshop 同步订单
+                    $get = array('method' => 'sync_order', 'phone'=> $user->uPhone, 'goods_money' => $goods->gMarketPrice, 'money_paid' => $price, 'goods_name' => $goods->gName, 'goods_number' => 1, 'order_sn' => $orderSn, 'market_price' => $goods->gMarketPrice, 'goods_price' => $price);
+                    ksort($get, SORT_STRING);
+                    $str = implode($get);
+                    $get['sign'] = md5($str . Helper_Curl::$signStr);
+                    $result =  Helper_Curl::get(Helper_Curl::$url, $get);
+                } catch (Exception $e) {
+                    throw new Exception($e->getMessage());
+                }
             } catch (Exception $e){
                 return $this->_errorMessage($e->getMessage());
             }

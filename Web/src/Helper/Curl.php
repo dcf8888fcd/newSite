@@ -5,6 +5,7 @@
 class Helper_Curl {
     
     public static $url = 'http://ecshop/user.php?act=api';
+    public static $signStr = '123456';
 
     public static function get($url, $get = array(), $post = array(), $opt = array()) {
 

@@ -50,11 +50,32 @@ class UserController extends Boss_BaseController {
             try {
                 $dao = new DAO_User();
                 $data['uPwd'] = md5($data['uPwd']);
+                $data['uBalance'] = intval($data['uBalance'] * 100);
                 $list= $dao->listByConditions(array('uName = ?' , $data['uName']));
                 if ($list) {
-                    throw new Exception('已经存在相同名称的管理员'); 
+                    throw new Exception('已经存在相同名称的会员'); 
                 }
                 $result = $dao->add($data); 
+
+                try {
+                    //请求ecshop 添加用户
+                    $get = array('method' => 'add_user', 'phone'=> $data['uPhone'], 'password' => $data['uPwd']);
+                    ksort($get, SORT_STRING);
+                    $str = implode($get);
+                    $get['sign'] = md5($str . Helper_Curl::$signStr);
+                    $result =  Helper_Curl::get(Helper_Curl::$url, $get);
+                    if ($data['uBalance']) {
+                        //请求ecshop 添加余额
+                        $get = array('method' => 'add_user_account', 'phone'=> $data['uPhone'],'money' => $data['uBalance'] / 100);
+                        ksort($get, SORT_STRING);
+                        $str = implode($get);
+                        $get['sign'] = md5($str . Helper_Curl::$signStr);
+                        $result =  Helper_Curl::get(Helper_Curl::$url, $get);
+                    }
+                } catch (Exception $e){
+                    throw new Exception($e->getMessage()); 
+                }
+
             } catch (Exception $e){
                 return $this->_errorMessage($e->getMessage());
             }

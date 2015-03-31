@@ -71,9 +71,10 @@ class UserController extends Retailer_BaseController {
             try {
                 $dao = new DAO_User();
                 $data['uPwd'] = md5($data['uPwd']);
+                $data['uBalance'] = intval($data['uBalance'] * 100);
                 $list= $dao->listByConditions(array('uName = ?' , $data['uName']));
                 if ($list) {
-                    throw new Exception('已经存在相同名称的管理员'); 
+                    throw new Exception('已经存在相同名称的会员'); 
                 }
                 $result = $dao->add($data); 
             } catch (Exception $e){
