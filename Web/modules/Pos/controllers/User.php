@@ -36,7 +36,7 @@ class UserController extends Pos_BaseController {
                     $totalPrice = intval($price * 100) * intval($number);
 
                     if($totalPrice > $user->uBalance) {
-                        return $this->_errorMessage('余额不足');
+                        throw new Exception('余额不足');
                     }
 
                     //这里应该先加个锁
@@ -61,6 +61,14 @@ class UserController extends Pos_BaseController {
                 });
 
                 try {
+
+                    //请求ecshop 同步订单
+                    $get = array('method' => 'consume', 'phone'=> $user->uPhone, 'money' => $price * $number);
+                    ksort($get, SORT_STRING);
+                    $str = implode($get);
+                    $get['sign'] = md5($str . Helper_Curl::$signStr);
+                    $result =  Helper_Curl::get(Helper_Curl::$url, $get);
+
                     //请求ecshop 同步订单
                     $get = array('method' => 'sync_order', 'phone'=> $user->uPhone, 'goods_money' => $goods->gMarketPrice, 'money_paid' => $price, 'goods_name' => $goods->gName, 'goods_number' => 1, 'order_sn' => $orderSn, 'market_price' => $goods->gMarketPrice, 'goods_price' => $price);
                     ksort($get, SORT_STRING);
